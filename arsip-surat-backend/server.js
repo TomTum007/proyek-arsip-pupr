@@ -6,20 +6,23 @@ const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-// PERBAIKAN: Gunakan port dari hosting, atau 3000 jika di lokal
 const PORT = process.env.PORT || 3000;
 
 // =================================================================
 // BAGIAN 2: MIDDLEWARE
 // =================================================================
-app.use(cors()); 
+
+// PERBAIKAN: Konfigurasi CORS agar spesifik mengizinkan domain frontend Anda
+const corsOptions = {
+  origin: 'https://tomtum007.github.io' 
+};
+app.use(cors(corsOptions)); 
+
 app.use(express.json()); 
 
 // =================================================================
 // BAGIAN 3: KONEKSI DATABASE
 // =================================================================
-// PERBAIKAN: Gunakan variabel koneksi dari hosting (Railway),
-// atau gunakan info lokal jika variabel tersebut tidak ada.
 const db = mysql.createPool({
     host: process.env.MYSQLHOST || 'localhost',
     user: process.env.MYSQLUSER || 'root',
