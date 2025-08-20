@@ -75,7 +75,7 @@
 
         async function muatDataSurat() {
             try {
-                const response = await fetch('http://localhost:3000/api/surat');
+                const response = await fetch('proyek-arsip-pupr-production.up.railway.app/api/surat');
                 if (!response.ok) throw new Error('Gagal mengambil data');
                 const suratList = await response.json();
                 tbody.innerHTML = "";
@@ -121,7 +121,7 @@
         async function deleteRow(id) {
             if (confirm('Apakah Anda yakin ingin menghapus surat ini?')) {
                 try {
-                    await fetch(`http://localhost:3000/api/surat/${id}`, { method: 'DELETE' });
+                    await fetch(`proyek-arsip-pupr-production.up.railway.app/api/surat/${id}`, { method: 'DELETE' });
                     muatDataSurat();
                 } catch (error) { alert('Gagal menghapus surat.'); }
             }
@@ -130,7 +130,7 @@
         async function lockRow(id) {
             if (confirm('Anda yakin ingin mengunci surat ini? Data tidak bisa diedit lagi.')) {
                 try {
-                    await fetch(`http://localhost:3000/api/surat/lock/${id}`, { method: 'PUT' });
+                    await fetch(`proyek-arsip-pupr-production.up.railway.app/api/surat/lock/${id}`, { method: 'PUT' });
                     muatDataSurat();
                 } catch (error) { alert('Gagal mengunci surat.'); }
             }
@@ -139,7 +139,7 @@
         async function unlockRow(id) {
             if (confirm('Anda yakin ingin membuka kunci surat ini?')) {
                 try {
-                    await fetch(`http://localhost:3000/api/surat/unlock/${id}`, { method: 'PUT' });
+                    await fetch(`proyek-arsip-pupr-production.up.railway.app/api/surat/unlock/${id}`, { method: 'PUT' });
                     muatDataSurat();
                 } catch (error) { alert('Gagal membuka kunci surat.'); }
             }

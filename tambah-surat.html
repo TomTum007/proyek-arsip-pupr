@@ -93,7 +93,7 @@
                 bidang: document.getElementById("bidang").value,
             };
             try {
-                const response = await fetch('http://localhost:3000/api/surat', {
+                const response = await fetch('proyek-arsip-pupr-production.up.railway.app/api/surat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
