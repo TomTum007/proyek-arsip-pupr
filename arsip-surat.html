@@ -62,7 +62,7 @@
             // PERBAIKAN ADA DI BARIS DI BAWAH INI
             const tbody = document.querySelector("#arsipTable"); 
             try {
-                const response = await fetch('proyek-arsip-pupr-production.up.railway.app/api/surat');
+                const response = await fetch('https://proyek-arsip-pupr-production.up.railway.app/api/surat');
                 if (!response.ok) throw new Error('Gagal memuat data');
                 const dataSurat = await response.json();
                 const arsipSurat = dataSurat.filter(data => data.terkunci === 1);

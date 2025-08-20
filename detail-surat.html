@@ -81,7 +81,7 @@
             }
 
             try {
-                const response = await fetch(`proyek-arsip-pupr-production.up.railway.app/api/surat/${suratId}`);
+                const response = await fetch(`https://proyek-arsip-pupr-production.up.railway.app/api/surat/${suratId}`);
                 if (!response.ok) throw new Error('Surat tidak ditemukan');
                 
                 const surat = await response.json();
