@@ -11,13 +11,10 @@ const PORT = process.env.PORT || 3000;
 // =================================================================
 // BAGIAN 2: MIDDLEWARE
 // =================================================================
-
-// PERBAIKAN: Konfigurasi CORS agar spesifik mengizinkan domain frontend Anda
 const corsOptions = {
   origin: 'https://tomtum007.github.io' 
 };
 app.use(cors(corsOptions)); 
-
 app.use(express.json()); 
 
 // =================================================================
@@ -34,6 +31,11 @@ const db = mysql.createPool({
 // =================================================================
 // BAGIAN 4: API ENDPOINTS (RUTE LENGKAP)
 // =================================================================
+
+// PERBAIKAN: Rute utama untuk health check
+app.get('/', (req, res) => {
+  res.send('Backend Arsip Surat Aktif!');
+});
 
 // GET: Mengambil SEMUA data surat
 app.get('/api/surat', async (req, res) => {
