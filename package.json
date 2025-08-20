@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "start": "node arsip-surat-backend/server.js",
+  "install-backend": "cd arsip-surat-backend && npm install",
+  "build": "npm run install-backend"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
