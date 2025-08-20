@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Surat Baru</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        .container { display: flex; }
+        .sidebar { width: 250px; background-color: #004180; color: white; min-height: 100vh; padding: 20px; }
+        .sidebar-header { text-align: center; margin-bottom: 40px; }
+        .sidebar-header img { width: 70px; }
+        .sidebar-header h3 { margin: 10px 0 0; font-size: 16px; }
+        .sidebar-nav a { display: block; color: white; text-decoration: none; padding: 15px; margin: 5px 0; border-radius: 6px; transition: background-color 0.3s ease; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background-color: #0057a8; }
+        .main-content { flex: 1; padding: 30px; }
+        header { margin-bottom: 30px; }
+        header h1 { margin: 0; color: #333; }
+        .form-container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); max-width: 700px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        textarea { resize: vertical; min-height: 100px; }
+        .form-actions { display: flex; gap: 10px; margin-top: 30px; }
+        .btn { border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 16px; transition: background-color 0.3s; }
+        .btn-primary { background-color: #0057a8; color: white; }
+        .btn-primary:hover { background-color: #004180; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .btn-secondary:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="images/begron.png" alt="Logo PUPR">
+                <h3>Arsip Surat Keluar</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="surat-keluar.html">Daftar Surat</a>
+                <a href="tambah-surat.html" class="active">Tambah Surat Baru</a>
+                <a href="arsip-surat.html">Arsip Terkunci</a>
+            </nav>
+        </div>
+        <div class="main-content">
+            <header><h1>Tambah Surat Keluar Baru</h1></header>
+            <div class="form-container">
+                <form id="suratForm">
+                    <div class="form-group">
+                        <label for="noAgenda">No Agenda</label>
+                        <input type="text" id="noAgenda" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="alamatTujuan">Alamat Tujuan</label>
+                        <textarea id="alamatTujuan" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="perihal">Perihal</label>
+                        <input type="text" id="perihal" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="tanggal" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="bidang">Bidang</label>
+                        <select id="bidang" required>
+                            <option value="" disabled selected>-- Pilih Bidang --</option>
+                            <option value="Bina Marga">Bina Marga</option>
+                            <option value="Cipta Karya">Cipta Karya</option>
+                            <option value="Tata Ruang">Tata Ruang</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Surat</button>
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='surat-keluar.html'">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById("suratForm");
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const data = {
+                noAgenda: document.getElementById("noAgenda").value,
+                alamatTujuan: document.getElementById("alamatTujuan").value,
+                perihal: document.getElementById("perihal").value,
+                tanggal: document.getElementById("tanggal").value,
+                bidang: document.getElementById("bidang").value,
+            };
+            try {
+                const response = await fetch('http://localhost:3000/api/surat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (!response.ok) throw new Error('Gagal menyimpan data ke server');
+                const result = await response.json();
+                alert(result.message);
+                window.location.href = "surat-keluar.html";
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menyimpan surat.');
+            }
+        });
+    </script>
+</body>
+</html>

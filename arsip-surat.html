@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsip Surat Terkunci</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        .container { display: flex; }
+        .sidebar { width: 250px; background-color: #004180; color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        .sidebar-header { text-align: center; margin-bottom: 40px; }
+        .sidebar-header img { width: 70px; }
+        .sidebar-header h3 { margin: 10px 0 0; font-size: 16px; }
+        .sidebar-nav a { display: block; color: white; text-decoration: none; padding: 15px; margin: 5px 0; border-radius: 6px; transition: background-color 0.3s ease; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background-color: #0057a8; }
+        .main-content { flex: 1; padding: 30px; }
+        header { margin-bottom: 30px; }
+        header h1 { margin: 0; color: #333; }
+        .table-container { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e9ecef; }
+        th { font-weight: 600; font-size: 14px; color: #666; }
+        td { color: #333; }
+        .btn-view { background-color: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="images/begron.png" alt="Logo PUPR">
+                <h3>Arsip Surat Keluar</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="surat-keluar.html">Daftar Surat</a>
+                <a href="tambah-surat.html">Tambah Surat Baru</a>
+                <a href="arsip-surat.html" class="active">Arsip Terkunci</a>
+            </nav>
+        </div>
+        <div class="main-content">
+            <header><h1>Arsip Surat Terkunci</h1></header>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No Agenda</th>
+                            <th>Perihal</th>
+                            <th>Tanggal</th>
+                            <th>Bidang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="arsipTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = async function() {
+            // PERBAIKAN ADA DI BARIS DI BAWAH INI
+            const tbody = document.querySelector("#arsipTable"); 
+            try {
+                const response = await fetch('http://localhost:3000/api/surat');
+                if (!response.ok) throw new Error('Gagal memuat data');
+                const dataSurat = await response.json();
+                const arsipSurat = dataSurat.filter(data => data.terkunci === 1);
+
+                tbody.innerHTML = "";
+                if (arsipSurat.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tidak ada surat yang diarsipkan.</td></tr>';
+                    return;
+                }
+                arsipSurat.forEach(data => {
+                    const row = document.createElement("tr");
+                    const tanggalFormatted = new Date(data.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+                    row.innerHTML = `
+                        <td>${data.no_agenda}</td>
+                        <td>${data.perihal}</td>
+                        <td>${tanggalFormatted}</td>
+                        <td>${data.bidang}</td>
+                        <td><a href="detail-surat.html?id=${data.id}" class="btn-view">Lihat</a></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Gagal memuat arsip:', error);
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Gagal memuat data dari server.</td></tr>';
+            }
+        };
+    </script>
+</body>
+</html>
